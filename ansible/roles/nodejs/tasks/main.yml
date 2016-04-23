@@ -1,0 +1,19 @@
+---
+
+  - name: install nodejs requirements
+    become: yes
+    become_method: sudo
+    apt: pkg={{ item }} state=present
+    with_items:
+      - g++
+      - make
+
+  - name: add Chris Lea's nodejs ppa
+    become: yes
+    become_method: sudo
+    apt_repository: repo='ppa:chris-lea/node.js' mode='644'
+
+  - name: install nodejs
+    become: yes
+    become_method: sudo
+    apt: pkg=nodejs update_cache=yes

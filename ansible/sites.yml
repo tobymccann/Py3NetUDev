@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  roles:
+    - { role: 'common', tags: 'common' }
+    - { role: 'bash', tags: 'bash' }
+    - { role: 'virtualenv', 'virtualenv' }
+    - { role: 'python3', 'python3' }
+    - { role: 'nginx', 'nginx'}
+    - { role: 'Django', 'Django'}

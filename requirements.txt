@@ -1,0 +1,15 @@
+Jinja2
+Pillow
+PyYAML
+Sphinx
+numpy
+oauth2
+pandas==0.18.0
+pyOpenSSL
+pycrypto
+pylint
+python-dateutil
+pytz
+requests
+virtualenv
+tox

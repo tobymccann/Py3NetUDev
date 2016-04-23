@@ -1,0 +1,51 @@
+---
+
+- name: Add APT key
+  become: yes
+  become_method: sudo
+  apt_key: keyserver=pgp.mit.edu id=0xA5D32F012649A5A9 state=present
+
+- name: Add APT repository
+  become: yes
+  become_method: sudo
+  apt_repository: repo="deb http://masi.vuse.vanderbilt.edu/neurodebian data main" update_cache=yes mode='644' filename='neurodebian.sources'
+
+- name: Add APT repository
+  become: yes
+  become_method: sudo
+  apt_repository: repo="deb http://masi.vuse.vanderbilt.edu/neurodebian trusty main" update_cache=yes mode='644' filename='neurodebian.sources'
+
+
+- name: update apt packages
+  become: yes
+  become_method: sudo
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install Python packages
+  become: yes
+  become_method: sudo
+  apt: pkg={{ item }} state=present
+  with_items:
+    # Python Dev
+    - python3.5
+    - python-setuptools
+    - python3-software-properties
+    - python-wheel
+    - python-pandas
+    - python3-dev
+
+- easy_install: name=pip3 state=latest
+
+- name: Install Pip dependencies
+  pip: requirements=/vagrant/requirements.txt
+
+# - name: Install basic pip packages
+#   pip: name="{{ item }}"
+#   with_items:
+#     - virtualenv
+#     - Jinja2
+#     - pymongo
+#     - Flask
+#     - tox
+#     - sphinx
+#     - pylint

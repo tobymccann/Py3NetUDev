@@ -1,0 +1,20 @@
+---
+
+- name: update apt packages
+  become: yes
+  become_method: sudo
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install basic packages
+  become: yes
+  become_method: sudo
+  apt: pkg={{ item }} state=present
+  with_items:
+    - git
+    - build-essential
+    - curl
+    - zip
+    - wget
+    - openjdk-7-jdk
+    - vim
+    - libjpeg-dev
