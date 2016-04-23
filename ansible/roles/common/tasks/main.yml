@@ -17,4 +17,3 @@
     - wget
     - openjdk-7-jdk
     - vim
-    - libjpeg-dev
