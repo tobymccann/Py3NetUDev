@@ -27,17 +27,19 @@
   apt: pkg={{ item }} state=present
   with_items:
     # Python Dev
-    - python3.4
-    - python-setuptools
+    - python3.5
+    - python3-setuptools
     - python3-software-properties
     - python-wheel
     - python-pandas
     - python3-dev
 
-- easy_install: name=pip3 state=latest
+- easy_install: name=pip executable=easy_install3 state=latest
+  become: yes
+  become_method: sudo
 
 - name: Install Pip dependencies
-  pip: requirements=/vagrant/requirements.txt
+  pip: requirements=/vagrant/requirements.txt executable=/usr/local/bin/pip3
 
 # - name: Install basic pip packages
 #   pip: name="{{ item }}"

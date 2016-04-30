@@ -15,5 +15,8 @@
     - curl
     - zip
     - wget
-    - openjdk-7-jdk
+    - default-jdk
     - vim
+    - libffi-dev
+    - g++
+    - libssl-dev
