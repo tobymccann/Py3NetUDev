@@ -12,6 +12,7 @@ import os
 import pandas as pd
 import pymongo
 import json
+import xlrd
 
 
 def import_content(filepath):
@@ -44,6 +45,7 @@ def import_content(filepath):
     data['os_image'].update(data['os_image'].apply(
         lambda x: x.split(";")[0] if len(x.split()) > 1 else None)
     )
+    data.set_index('device', inplace=True)
     # convert data to JSON, one doc per row for insertion to mongoDB
     data_json = json.loads(data.to_json(orient='records'))
     # remove and previous stored data
@@ -54,10 +56,18 @@ def import_content(filepath):
     db_cm.create_index([('serial_number', pymongo.ASCENDING)], unique=False)
 
     # write Device rows with duplicate Serial Numbers to a CSV
-    dupes = None
+    dupes = {}
     dupes = data[data.duplicated(['serial_number'], keep='last') |
                  data.duplicated(['serial_number'])]
-    dupes.to_csv(cdir+'duplicates.csv')
+    dupes.to_excel(cdir + 'duplicates.xlsx')
+
+    by_model = []
+    by_model = data.os_image.groupby('model').nunique().sort_values(ascending=False)
+    print(by_model)
+
+    by_os = {}
+    by_os = data.groupby(['os_image', 'model']).size().sort_values(ascending=False)
+    by_os.to_frame().to_excel(cdir + 'oscount.xlsx', index=True)
 
 # call method
 if __name__ == "__main__":

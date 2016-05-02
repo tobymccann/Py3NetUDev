@@ -20,3 +20,5 @@
     - libffi-dev
     - g++
     - libssl-dev
+    - firefox
+    - xvfb

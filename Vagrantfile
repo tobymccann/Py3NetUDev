@@ -46,8 +46,8 @@ if Vagrant.has_plugin?("vagrant-cachier")
       py3netudev.vm.host_name = "py3netudev"
       py3netudev.vm.network :private_network, ip: "192.168.82.130"
       py3netudev.vm.network :forwarded_port,
-        guest: 3000,
-        host: 3000,
+        guest: 8000,
+        host: 8000,
         auto_correct: true
       py3netudev.ssh.forward_agent = true
       py3netudev.vm.provision "ansible" do |ansible|

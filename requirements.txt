@@ -10,5 +10,6 @@ pylint
 python-dateutil
 pytz
 requests
+selenium
 virtualenv
 tox
