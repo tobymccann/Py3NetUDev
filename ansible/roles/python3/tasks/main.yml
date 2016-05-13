@@ -27,7 +27,7 @@
   apt: pkg={{ item }} state=present
   with_items:
     # Python Dev
-    - python3.5
+    - python3.4
     - python3-setuptools
     - python3-software-properties
     - python-wheel

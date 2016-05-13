@@ -15,4 +15,4 @@
 
 - name: Install additional packages
   apt: pkg={{item}}
-  with_items: mongodb_additional_packages
+  with_items: "{{mongodb_additional_packages}}"

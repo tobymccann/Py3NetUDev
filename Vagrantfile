@@ -9,16 +9,17 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider :virtualbox do |v|
     v.memory = "4096"
-    v.gui = true
+    v.gui = false
   end
-  config.vm.box = "geerlingguy/ubuntu1604"
+  # config.vm.box = "geerlingguy/ubuntu1604"
+  config.vm.box = "ubuntu/trusty64"
    config.vm.synced_folder '.', '/vagrant', nfs: true
 
 # Configure vagrant-cachier plugin
 if Vagrant.has_plugin?("vagrant-cachier")
     # Configure cached packages to be shared between instances of the same base box.
     # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
-    config.cache.scope = :box
+    config.cache.scope = :machine
 
     # OPTIONAL: If you are using VirtualBox, you might want to use that to enable
     # NFS for shared folders. This is also very useful for vagrant-libvirt if you
@@ -44,10 +45,10 @@ if Vagrant.has_plugin?("vagrant-cachier")
     # @end: Configure vagrant-cachier plugin
     config.vm.define "py3netudev" do |py3netudev|
       py3netudev.vm.host_name = "py3netudev"
-      py3netudev.vm.network :private_network, ip: "192.168.82.130"
-      py3netudev.vm.network :forwarded_port,
-        guest: 8000,
-        host: 8000,
+      py3netudev.vm.network :private_network, ip: "192.168.82.131"
+       py3netudev.vm.network :forwarded_port,
+        guest: 3000,
+        host: 3000,
         auto_correct: true
       py3netudev.ssh.forward_agent = true
       py3netudev.vm.provision "ansible" do |ansible|

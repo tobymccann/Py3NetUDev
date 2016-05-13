@@ -1,0 +1,16 @@
+---
+
+postgresql_version: 9.5
+
+postgresql_databases:
+  - name: nvsdb
+    owner: skynet
+
+postgresql_users:
+  - name: skynet
+    pass: md53cb9b056b1a1861d4ed727886416d837
+    encrypted: yes
+
+postgresql_user_privileges:
+  - name: skynet
+    db: nvsdb

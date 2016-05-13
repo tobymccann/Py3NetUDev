@@ -27,17 +27,20 @@ def import_content(filepath):
 
     # Use pandas to read CSV, skipping top 2 lines, last line from
     # BNA CSV export. Set column data to string type.
+    cols = ['device_name', 'bna_realm', 'vendor', 'device_type', 'model',
+            'os_image', 'bna_created_date', 'pri_host_name_ip', 'entities',
+            'entities_descr', 'entities_PID', 'entities_VID', 'entities_SN',
+            'device_function', 'region', 'serial_number', 'site_code',
+            'supervisor_type']
+
     data = pd.read_csv(
-        file_res, index_col=False, skiprows=2,
-        skip_footer=1, converters={'Device': str, 'Serial Number': str,
-                                   'Realm': str, 'Vendor': str, 'Model': str,
-                                   'OS Image': str},
-        engine='python'
+        file_res, skiprows=3, skip_footer=1, index_col=False, sep=',',
+        header=None, names=cols, engine='python'
     )
     # make col headers more 'key' friendly
-    data.columns = data.columns.str.strip().str.lower().str.replace(' ', '_')
+    # data.columns = data.columns.str.strip().str.lower().str.replace(' ', '_')
     # Drop rows where Serial Number is empty
-    data = data.dropna(subset=['serial_number'])
+    # data = data.dropna(subset=['serial_number'])
     # Split the OS Image column by "," and ";" to remove extraneous data
     data['os_image'].update(data['os_image'].apply(
         lambda x: x.split(",")[0] if len(x.split()) > 1 else None)
@@ -45,7 +48,7 @@ def import_content(filepath):
     data['os_image'].update(data['os_image'].apply(
         lambda x: x.split(";")[0] if len(x.split()) > 1 else None)
     )
-    data.set_index('device', inplace=True)
+    # data.set_index('device_name', inplace=True)
     # convert data to JSON, one doc per row for insertion to mongoDB
     data_json = json.loads(data.to_json(orient='records'))
     # remove and previous stored data
@@ -53,24 +56,28 @@ def import_content(filepath):
     # insert JSON data to mongoDB collection.
     db_cm.insert(data_json)
     # create an Index for Serial Number; set to non-unique due to dirty data
-    db_cm.create_index([('serial_number', pymongo.ASCENDING)], unique=False)
+    db_cm.create_index([('entities_SN', pymongo.ASCENDING)], unique=False)
 
     # write Device rows with duplicate Serial Numbers to a CSV
-    dupes = {}
-    dupes = data[data.duplicated(['serial_number'], keep='last') |
-                 data.duplicated(['serial_number'])]
-    dupes.to_excel(cdir + 'duplicates.xlsx')
+    # dupes = {}
+    # dupes = data[data.duplicated(['serial_number'], keep='last') |
+    #              data.duplicated(['serial_number'])]
+    # dupes.to_excel(cdir + 'duplicates.xlsx')
 
-    by_model = []
-    by_model = data.os_image.groupby('model').nunique().sort_values(ascending=False)
-    print(by_model)
+    # by_model = []
+    # by_model = data.os_image.groupby('model').nunique().sort_values(ascending=False)
+    # by_model = pd.pivot_table(data, index=['model', 'os_image'],
+    #                           values=['count'], aggfunc=[len])
+    # by_model.to_excel(cdir + 'modelcount.xlsx', index=True,
+    #                   sheet_name='by_model')
 
-    by_os = {}
-    by_os = data.groupby(['os_image', 'model']).size().sort_values(ascending=False)
-    by_os.to_frame().to_excel(cdir + 'oscount.xlsx', index=True)
+    # by_os = {}
+    # by_os = data.groupby(['os_image', 'model']).size().sort_values(ascending=False)
+    # by_os.to_frame().to_excel(cdir + 'oscount.xlsx', index=True,
+    #                           sheet_name='by_os')
 
 # call method
 if __name__ == "__main__":
     # Define path to CSV
-    filepath = '/vagrant/data/DeviceInventory-Category.Switch.csv'
+    filepath = '/vagrant/data/DeviceInventory-Category.Switch.XOM.csv'
     import_content(filepath)

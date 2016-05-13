@@ -2,7 +2,7 @@
   - name: install meteor
     become: yes
     become_method: sudo
-    script: /Users/jkennemer/Projects/PyNetUDev/ansible/roles/meteor/files/meteor.sh
+    script: /Users/jkennemer/Projects/Py3NetUDev/ansible/roles/meteor/files/meteor.sh
 
   - name: install meteor npm modules
     become: yes

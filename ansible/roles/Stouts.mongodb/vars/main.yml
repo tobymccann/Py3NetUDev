@@ -4,6 +4,7 @@ mongodb_enabled: yes
 mongodb_package: mongodb-org
 mongodb_user: mongodb
 mongodb_daemon_name: "{{ 'mongod' if ('mongodb-org' == mongodb_package) else 'mongodb' }}"
+# mongodb_daemon_name: mongodb
 mongodb_conf_port: 27017
 mongodb_conf_httpinterface: no
 

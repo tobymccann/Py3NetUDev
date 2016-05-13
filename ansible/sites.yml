@@ -3,9 +3,6 @@
   gather_facts: true
   become: yes
   become_method: sudo
-  vars:
-    site_name: "nvsdb"
-    site_directory: "/var/www"
 
   roles:
     - { role: 'common', tags: 'common' }
@@ -13,4 +10,8 @@
     - { role: 'virtualenv', 'virtualenv' }
     - { role: 'python3', 'python3' }
 #    - { role: 'nginx', 'nginx'}
+#    - { role: 'postgresql', 'postgresql'}
+    - { role: 'Stouts.mongodb', 'Stouts.mongodb' }
     - { role: 'Django', 'Django'}
+    - { role: 'nodejs', 'nodejs' }
+    - { role: 'meteor', 'meteor' }

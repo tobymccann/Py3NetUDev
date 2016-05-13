@@ -13,9 +13,9 @@ mongodb_user: mongodb
 mongodb_daemon_name: "{{ 'mongod' if ('mongodb-org' in mongodb_package) else 'mongodb' }}"
 
 mongodb_conf_auth: no                             # Run with security
-mongodb_conf_bind_ip: 127.0.0.1,192.168.82.130    # Comma separated list of ip addresses to listen on
+mongodb_conf_bind_ip: 127.0.0.1,192.168.82.131    # Comma separated list of ip addresses to listen on
 mongodb_conf_cpu: yes                             # Periodically show cpu and iowait utilization
-mongodb_conf_dbpath: /data/db                     # Directory for datafiles
+mongodb_conf_dbpath: /var/lib/mongodb             # Directory for datafiles
 mongodb_conf_fork: no                             # Fork server process
 mongodb_conf_httpinterface: no                    # Enable http interface
 mongodb_conf_ipv6: no                             # Enable IPv6 support (disabled by default)
